@@ -1,11 +1,13 @@
 package com.quizapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Handler;
 import android.view.View;
 
 import androidx.navigation.NavController;
@@ -19,6 +21,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
+    //Try
+    private static int SPLASH_TIME_OUT = 5000;
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
@@ -26,6 +30,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent i = new Intent(MainActivity.this, SecondActivity.class);
+                startActivity(i);
+                finish();
+            }
+        }, SPLASH_TIME_OUT);
+        /**
+        //Try
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
+                startActivity(homeIntent);
+                finish();
+            },SPLASH_TIME_OUT)
+        }
+         */
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
