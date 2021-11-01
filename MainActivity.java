@@ -1,5 +1,6 @@
 package com.quizapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -19,10 +20,11 @@ import com.quizapp.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     //Try
-    private static int SPLASH_TIME_OUT = 5000;
+    private static int SPLASH_TIME_OUT = 1000;
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
@@ -35,11 +37,13 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(MainActivity.this, SecondActivity.class);
+                Intent i = new Intent(MainActivity.this, HomeActivity.class);
                 startActivity(i);
                 finish();
             }
         }, SPLASH_TIME_OUT);
+
+
         /**
         //Try
         new Handler().postDelayed(new Runnable() {
@@ -97,5 +101,16 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+    //This is a method to hopefully show the message
+    //Try to do something with these lines hopefully something will work
+    public void showToast(View view){
+        //Toast.makeText(this, "Welcome to the app quiz", Toast.LENGTH_LONG).show();
+        Context context = getApplicationContext();
+        CharSequence text = "Welcome to the quiz app!";
+        int durarion = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, durarion);
+        toast.show();
     }
 }
