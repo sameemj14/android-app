@@ -104,14 +104,33 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: " + stringFromTextView);
          */
     }
-
+    //This is were it will show the total score out of 10
+    private void showScoreSheet(){
+        BottomSheetDialog scoreSheetDialog = new BottomSheetDialog(MainActivity.this);
+        View ScoreSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.score_sheet,
+                (LinearLayout) findViewById(R.id.idLLScore));
+        scoreTV.setText("The score is " + currentScore + "/10");
+        restartQuiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currentPos = random.nextInt(quizModelArrayList.size());
+                setDataToView(currentPos);
+                questionAttempted = 1;
+                currentScore = 0;
+                scoreSheetDialog.dismiss();
+            }
+        });
+        scoreSheetDialog.setCancelable(false);
+        scoreSheetDialog.setContentView(ScoreSheetView);
+        scoreSheetDialog.show();
+    }
 
     //This is to make sure the users answered 10 questions or more if desire
     private void setDataToView(int currentPos){
         questionNumberTV.setText("Question you have attempted: " + questionAttempted + "/10");
-        //Check if questions attempted has been 10
+        //Check if questions attempted has been 10 or change it if wanted to
         if (questionAttempted == 10){
-
+            showScoreSheet();
         } else {
             questionTV.setText(quizModelArrayList.get(currentPos).getQuestion());
             option1Bt.setText(quizModelArrayList.get(currentPos).getOption1());
