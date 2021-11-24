@@ -22,7 +22,7 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
     //Try
-    private static int SPLASH_TIME_OUT = 6000;
+    private static int SPLASH_TIME_OUT = 5000;
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
