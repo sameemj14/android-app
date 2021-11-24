@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setDataToView(currentPos);
 
         //from here to line 93 is where the score will increment each time it has been answered correctly
+        
         option1Bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
