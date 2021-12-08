@@ -109,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
         BottomSheetDialog scoreSheetDialog = new BottomSheetDialog(MainActivity.this);
         View ScoreSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.score_sheet,
                 (LinearLayout) findViewById(R.id.idLLScore));
+        TextView scoreTV = ScoreSheetView.findViewById(R.id.idTVScore);
+        Button restartQuiz = ScoreSheetView.findViewById(R.id.idButnRestart);
         scoreTV.setText("The score is " + currentScore + "/10");
         restartQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,8 +131,7 @@ public class MainActivity extends AppCompatActivity {
     private void setDataToView(int currentPos){
         questionNumberTV.setText("Question you have attempted: " + questionAttempted + "/10");
         //Check if questions attempted has been 10 or change it if wanted to
-        if (questionAttempted == 10){
-            showScoreSheet();
+
         } else {
             questionTV.setText(quizModelArrayList.get(currentPos).getQuestion());
             option1Bt.setText(quizModelArrayList.get(currentPos).getOption1());
