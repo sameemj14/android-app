@@ -109,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
         BottomSheetDialog scoreSheetDialog = new BottomSheetDialog(MainActivity.this);
         View ScoreSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.score_sheet,
                 (LinearLayout) findViewById(R.id.idLLScore));
+        TextView scoreTV = ScoreSheetView.findViewById(R.id.idTVScore);
+        Button restartQuiz = ScoreSheetView.findViewById(R.id.idButnRestart);
         scoreTV.setText("The score is " + currentScore + "/10");
         restartQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                 "the patterns and techniques used to design and build an application.", "Just show people how the app was built",
                 "the patterns and techniques used to design and build an application."));
         //Question 2
-        quizModelArrayList.add(new QuizModel("Which one of these is not theh stages in software engineering?", "Design.", "Maintenance.",
+        quizModelArrayList.add(new QuizModel("Which one of these is not the stages in software engineering?", "Design.", "Maintenance.",
                 "Implementation.", "Sketch.", "Sketch."));
         //Question 3
         quizModelArrayList.add(new QuizModel("What is the good of the spiral model?", "Risk management part of lifecycle.", "Project monitoring easily.",
@@ -172,10 +174,42 @@ public class MainActivity extends AppCompatActivity {
                 "All of the above", "None of the above", "All of the above"));
         //Question 9
         quizModelArrayList.add(new QuizModel("What does not describe an UML?", "Consists of several different diagram types.", "It is not a language but a method.",
-                "Can be used at different abstarction levels.", "It is a graphical language for visualizing.",
+                "Can be used at different abstraction levels.", "It is a graphical language for visualizing.",
                 "It is not a language but a method."));
         //Question 10
         quizModelArrayList.add(new QuizModel("What does a class in UML consists of?", "Attributes", "Operations", "None of the above.",
                 "All of the above.", "All of the above."));
+        //Question 11
+        quizModelArrayList.add(new QuizModel("What is not a step of the Spiral Model?", "Develop and verify prototype", "Determine objectives and constraints",
+                "Lots of documents per iteration", "Plan next iteration", "Lots of documents per iteration"));
+        //Question 12
+        quizModelArrayList.add(new QuizModel("What's bad about the spiral model?", "Long iteration", "Cost of process is high",
+                "Lots of rules to follow, hard for the whole project", "All of the above", "All of the above"));
+        //Question 13
+        quizModelArrayList.add(new QuizModel("What does agile development model features?", "Short iteration from 1 to 2 weeks", "It embraces changes",
+                "It's Test-Driven development", "All of the above", "All of the above"));
+        //Question 14
+        quizModelArrayList.add(new QuizModel("What is white box testing?", "You can test the white box instead of black box", "You test a program when you are not familiar with the code",
+                "Testing a system when you know the code", "Testing a system you didn't build", "Testing a system when you know the code"));
+        //Question 15
+        quizModelArrayList.add(new QuizModel("What is an example of Refactoring?", "Renaming a method", "Moving a field from one class to another",
+                "Changing public methods to private", "All of the above", "All of the above"));
+        //Question 16
+        quizModelArrayList.add(new QuizModel("What is/are the stage of failure?", "Defect", "Infection",
+                "Failure", "All of the above", "All of the above"));
+        //Question 17
+        quizModelArrayList.add(new QuizModel("Why should you simplify a test case?", "Easier to debug", "Identify duplicates",
+                "Both of the above", "None of the above", "None of the above"));
+        //Question 18
+        quizModelArrayList.add(new QuizModel("What is Postcondition failure?", "Infection within method", "Object is in the bad state",
+                "Infection before method", "Infection after method", "Infection within method"));
+        //Question 19
+        quizModelArrayList.add(new QuizModel("What is Precondition failure?", "Infection after method", "Object is in the bad state",
+                "Infection within method", "Infection before method", "Infection before method"));
+        //Question 20
+        quizModelArrayList.add(new QuizModel("What is a Heisenbug?", "A bug that does show up on debug but does not show up in general execution",
+                "A bug that does not show up in your code at all", "A bug that doesn't show up on debug but does show up in general execution",
+                "A bug that does show up on debug but does show up in general execution",
+                "A bug that doesn't show up on debug but does show up in general execution"));
     }
 }
