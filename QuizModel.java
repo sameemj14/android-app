@@ -1,4 +1,4 @@
-package com.example.quiz;
+package com.example.quizapp;
 
 public class QuizModel {
     private String question;

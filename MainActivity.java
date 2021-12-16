@@ -1,116 +1,220 @@
-package com.quizapp;
-
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
+package com.example.quizapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Handler;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import com.quizapp.databinding.ActivityMainBinding;
-
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-    //Try
-    private static int SPLASH_TIME_OUT = 1000;
 
-    private AppBarConfiguration appBarConfiguration;
-    private ActivityMainBinding binding;
+    //private static final String TAG = "MainActivity";
+    private TextView questionTV, questionNumberTV;
+    private Button option1Bt, option2Bt, option3Bt, option4Bt;
+    private ArrayList<QuizModel> quizModelArrayList;
+    Random random;
+    int currentScore = 0;
+    int questionAttempted = 1;
+    int currentPos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        questionTV = findViewById(R.id.idTVQuestion);
+        questionNumberTV = findViewById(R.id.idTVQuestionAttempted);
+        option1Bt = findViewById(R.id.idButnOption1);
+        option2Bt = findViewById(R.id.idButnOption2);
+        option3Bt = findViewById(R.id.idButnOption3);
+        option4Bt = findViewById(R.id.idButnOption4);
+        quizModelArrayList = new ArrayList<>();
+        random = new Random();
+        getQuizQuestion(quizModelArrayList);
+        currentPos = random.nextInt(quizModelArrayList.size());
+        setDataToView(currentPos);
 
-        new Handler().postDelayed(new Runnable() {
+        //from here to line 93 is where the score will increment each time it has been answered correctly
+        option1Bt.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                Intent i = new Intent(MainActivity.this, HomeActivity.class);
-                startActivity(i);
-                finish();
+            public void onClick(View view) {
+                if (quizModelArrayList.get(currentPos).getAnswer().trim().toLowerCase().
+                        equals(option1Bt.getText().toString().toLowerCase())){
+                    currentScore++;
+                }
+                questionAttempted++;
+                currentPos = random.nextInt(quizModelArrayList.size());
+                setDataToView(currentPos);
             }
-        }, SPLASH_TIME_OUT);
+        });
+
+        option2Bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (quizModelArrayList.get(currentPos).getAnswer().trim().toLowerCase().
+                        equals(option2Bt.getText().toString().toLowerCase())){
+                    currentScore++;
+                }
+                questionAttempted++;
+                currentPos = random.nextInt(quizModelArrayList.size());
+                setDataToView(currentPos);
+            }
+        });
+
+        option3Bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (quizModelArrayList.get(currentPos).getAnswer().trim().toLowerCase().
+                        equals(option3Bt.getText().toString().toLowerCase())){
+                    currentScore++;
+                }
+                questionAttempted++;
+                currentPos = random.nextInt(quizModelArrayList.size());
+                setDataToView(currentPos);
+            }
+        });
+
+        option4Bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (quizModelArrayList.get(currentPos).getAnswer().trim().toLowerCase().
+                        equals(option4Bt.getText().toString().toLowerCase())){
+                    currentScore++;
+                }
+                questionAttempted++;
+                currentPos = random.nextInt(quizModelArrayList.size());
+                setDataToView(currentPos);
+            }
+        });
 
 
         /**
-        //Try
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
-                startActivity(homeIntent);
-                finish();
-            },SPLASH_TIME_OUT)
-        }
+         TextView theTextView = (TextView) findViewById(R.id.textView1);
+         theTextView.setText("Welcome to the Quiz App!");
+         String stringFromTextView = theTextView.getText().toString();
+         Log.d(TAG, "onCreate: " + stringFromTextView);
          */
-
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        setSupportActionBar(binding.toolbar);
-
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-        binding.fab.setOnClickListener(new View.OnClickListener() {
+    }
+    //This is were it will show the total score out of 10
+    private void showScoreSheet(){
+        BottomSheetDialog scoreSheetDialog = new BottomSheetDialog(MainActivity.this);
+        View ScoreSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.score_sheet,
+                (LinearLayout) findViewById(R.id.idLLScore));
+        TextView scoreTV = ScoreSheetView.findViewById(R.id.idTVScore);
+        Button restartQuiz = ScoreSheetView.findViewById(R.id.idButnRestart);
+        scoreTV.setText("The score is " + currentScore + "/10");
+        restartQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+
+                currentPos = random.nextInt(quizModelArrayList.size());
+                setDataToView(currentPos);
+                questionAttempted = 1;
+                currentScore = 0;
+                scoreSheetDialog.dismiss();
+
+
+                SharedPreferences preferences = getSharedPreferences("PREFS", 0);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putInt("lastScore", currentScore);
+                editor.apply();
+
+                Intent intent = new Intent(getApplicationContext(), BestActivity.class);
+                startActivity(intent);
+                finish();
+
+                currentPos = random.nextInt(quizModelArrayList.size());
+                setDataToView(currentPos);
+                questionAttempted = 1;
+                currentScore = 0;
+                scoreSheetDialog.dismiss();
+
+
+
+
             }
         });
+        scoreSheetDialog.setCancelable(false);
+        scoreSheetDialog.setContentView(ScoreSheetView);
+        scoreSheetDialog.show();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    //This is to make sure the users answered 10 questions or more if desire
+    private void setDataToView(int currentPos){
+        questionNumberTV.setText("Question you have attempted: " + questionAttempted + "/10");
+        //Check if questions attempted has been 10
+        if (questionAttempted == 10){
+            showScoreSheet();
+        } else {
+            questionTV.setText(quizModelArrayList.get(currentPos).getQuestion());
+            option1Bt.setText(quizModelArrayList.get(currentPos).getOption1());
+            option2Bt.setText(quizModelArrayList.get(currentPos).getOption2());
+            option3Bt.setText(quizModelArrayList.get(currentPos).getOption3());
+            option4Bt.setText(quizModelArrayList.get(currentPos).getOption4());
         }
 
-        return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
+    //This is where the question will be added
+    private void getQuizQuestion(ArrayList<QuizModel> quizModelArrayList) {
+        //Question 1
+        quizModelArrayList.add(new QuizModel("What is an app architecture?", "A buiding of apps.", "A structure of the app",
+                "the patterns and techniques used to design and build an application.", "Just show people how the app was built",
+                "the patterns and techniques used to design and build an application."));
+        //Question 2
+        quizModelArrayList.add(new QuizModel("Which one of these is not theh stages in software engineering?", "Design.", "Maintenance.",
+                "Implementation.", "Sketch.", "Sketch."));
+        //Question 3
+        quizModelArrayList.add(new QuizModel("What is the good of the spiral model?", "Risk management part of lifecycle.", "Project monitoring easily.",
+                "Schedule and cost more realistic over time.", "All of the above.",
+                "All of the above."));
+        //Question 4
+        quizModelArrayList.add(new QuizModel("Why do version control systems?", "Keep seperate branches of development.", "Roll back if introduce bugs.",
+                "Track what changed between revisions of a project.", "All of the above.",
+                "All of the above"));
+        //Question 5
+        quizModelArrayList.add(new QuizModel("What is the basic Version Control Systems operations?", "Check out/ update.", "Commit.",
+                "Branch.", "All of the above.", "All of the above."));
+        //Question 6
+        quizModelArrayList.add(new QuizModel("Where would you set up a DB used in multiple tests?", "@Test", "@After",
+                "@Before", "@BeforeClass", "@BeforeClass"));
+        //Question 7
+        quizModelArrayList.add(new QuizModel("Where would you tear down a DB used in multiple tests?", "@Test", "@After",
+                "@Before", "@AfterClass", "@AfterClass"));
+        //Question 8
+        quizModelArrayList.add(new QuizModel("What is part of the distrubuted layered for software architecture?", "Client - Server", "Peer-to-peer",
+                "All of the above", "None of the above", "All of the above"));
+        //Question 9
+        quizModelArrayList.add(new QuizModel("What does not describe an UML?", "Consists of several different diagram types.", "It is not a language but a method.",
+                "Can be used at different abstarction levels.", "It is a graphical language for visualizing.",
+                "It is not a language but a method."));
+        //Question 10
+        quizModelArrayList.add(new QuizModel("What does a class in UML consists of?", "Attributes", "Operations", "None of the above.",
+                "All of the above.", "All of the above."));
     }
-    //This is a method to hopefully show the message
-    //Try to do something with these lines hopefully something will work
-    public void showToast(View view){
-        //Toast.makeText(this, "Welcome to the app quiz", Toast.LENGTH_LONG).show();
-        Context context = getApplicationContext();
-        CharSequence text = "Welcome to the quiz app!";
-        int durarion = Toast.LENGTH_SHORT;
 
-        Toast toast = Toast.makeText(context, text, durarion);
-        toast.show();
+   /* public void onClick(View view) {
+        SharedPreferences preferences = getSharedPreferences("PREFS", 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("lastScore", currentScore);
+        editor.apply();
+
+        Intent intent = new Intent(getApplicationContext(), BestActivity.class);
+        startActivity(intent);
+        finish();
     }
+
+    */
 }
